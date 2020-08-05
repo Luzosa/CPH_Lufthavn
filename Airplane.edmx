@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="AirplaneModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Airplanes">
+          <Key>
+            <PropertyRef Name="AirplanesId" />
+          </Key>
+          <Property Name="AirplanesId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FlightCompany_FK" Type="int" Nullable="false" />
+          <Property Name="StartingLocation" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Dest_Flight">
+          <Key>
+            <PropertyRef Name="Destination_FK" />
+            <PropertyRef Name="Airplanes_FK" />
+          </Key>
+          <Property Name="Destination_FK" Type="int" Nullable="false" />
+          <Property Name="Airplanes_FK" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Destinations">
+          <Key>
+            <PropertyRef Name="DestinationID" />
+          </Key>
+          <Property Name="DestinationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Destination" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FlightCompany">
+          <Key>
+            <PropertyRef Name="FlightCompanyID" />
+          </Key>
+          <Property Name="FlightCompanyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FlightCompanyName" Type="varchar" MaxLength="3" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Airplanes__Fligh__03F0984C">
+          <End Role="FlightCompany" Type="Self.FlightCompany" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Airplanes" Type="Self.Airplanes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FlightCompany">
+              <PropertyRef Name="FlightCompanyID" />
+            </Principal>
+            <Dependent Role="Airplanes">
+              <PropertyRef Name="FlightCompany_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Dest_Flig__Airpl__04E4BC85">
+          <End Role="Airplanes" Type="Self.Airplanes" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Dest_Flight" Type="Self.Dest_Flight" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Airplanes">
+              <PropertyRef Name="AirplanesId" />
+            </Principal>
+            <Dependent Role="Dest_Flight">
+              <PropertyRef Name="Airplanes_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Dest_Flig__Desti__72C60C4A">
+          <End Role="Destinations" Type="Self.Destinations" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Dest_Flight" Type="Self.Dest_Flight" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Destinations">
+              <PropertyRef Name="DestinationID" />
+            </Principal>
+            <Dependent Role="Dest_Flight">
+              <PropertyRef Name="Destination_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AirplaneModelStoreContainer">
+          <EntitySet Name="Airplanes" EntityType="Self.Airplanes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Dest_Flight" EntityType="Self.Dest_Flight" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Destinations" EntityType="Self.Destinations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FlightCompany" EntityType="Self.FlightCompany" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Airplanes__Fligh__03F0984C" Association="Self.FK__Airplanes__Fligh__03F0984C">
+            <End Role="FlightCompany" EntitySet="FlightCompany" />
+            <End Role="Airplanes" EntitySet="Airplanes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Dest_Flig__Airpl__04E4BC85" Association="Self.FK__Dest_Flig__Airpl__04E4BC85">
+            <End Role="Airplanes" EntitySet="Airplanes" />
+            <End Role="Dest_Flight" EntitySet="Dest_Flight" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Dest_Flig__Desti__72C60C4A" Association="Self.FK__Dest_Flig__Desti__72C60C4A">
+            <End Role="Destinations" EntitySet="Destinations" />
+            <End Role="Dest_Flight" EntitySet="Dest_Flight" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AirplaneModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Airplane">
+          <Key>
+            <PropertyRef Name="AirplanesId" />
+          </Key>
+          <Property Name="AirplanesId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FlightCompany_FK" Type="Int32" Nullable="false" />
+          <Property Name="StartingLocation" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="FlightCompany" Relationship="Self.FK__Airplanes__Fligh__03F0984C" FromRole="Airplanes" ToRole="FlightCompany" />
+          <NavigationProperty Name="Destinations" Relationship="Self.Dest_Flight" FromRole="Airplanes" ToRole="Destinations" />
+        </EntityType>
+        <EntityType Name="Destination">
+          <Key>
+            <PropertyRef Name="DestinationID" />
+          </Key>
+          <Property Name="DestinationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Destination1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Airplanes" Relationship="Self.Dest_Flight" FromRole="Destinations" ToRole="Airplanes" />
+        </EntityType>
+        <EntityType Name="FlightCompany">
+          <Key>
+            <PropertyRef Name="FlightCompanyID" />
+          </Key>
+          <Property Name="FlightCompanyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FlightCompanyName" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Airplanes" Relationship="Self.FK__Airplanes__Fligh__03F0984C" FromRole="FlightCompany" ToRole="Airplanes" />
+        </EntityType>
+        <Association Name="FK__Airplanes__Fligh__03F0984C">
+          <End Role="FlightCompany" Type="Self.FlightCompany" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Airplanes" Type="Self.Airplane" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FlightCompany">
+              <PropertyRef Name="FlightCompanyID" />
+            </Principal>
+            <Dependent Role="Airplanes">
+              <PropertyRef Name="FlightCompany_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Dest_Flight">
+          <End Role="Airplanes" Type="Self.Airplane" Multiplicity="*" />
+          <End Role="Destinations" Type="Self.Destination" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="AirplaneEntities2" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Airplanes" EntityType="Self.Airplane" />
+          <EntitySet Name="Destinations" EntityType="Self.Destination" />
+          <EntitySet Name="FlightCompanies" EntityType="Self.FlightCompany" />
+          <AssociationSet Name="FK__Airplanes__Fligh__03F0984C" Association="Self.FK__Airplanes__Fligh__03F0984C">
+            <End Role="FlightCompany" EntitySet="FlightCompanies" />
+            <End Role="Airplanes" EntitySet="Airplanes" />
+          </AssociationSet>
+          <AssociationSet Name="Dest_Flight" Association="Self.Dest_Flight">
+            <End Role="Airplanes" EntitySet="Airplanes" />
+            <End Role="Destinations" EntitySet="Destinations" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AirplaneModelStoreContainer" CdmEntityContainer="AirplaneEntities2">
+          <EntitySetMapping Name="Airplanes">
+            <EntityTypeMapping TypeName="AirplaneModel.Airplane">
+              <MappingFragment StoreEntitySet="Airplanes">
+                <ScalarProperty Name="AirplanesId" ColumnName="AirplanesId" />
+                <ScalarProperty Name="FlightCompany_FK" ColumnName="FlightCompany_FK" />
+                <ScalarProperty Name="StartingLocation" ColumnName="StartingLocation" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Destinations">
+            <EntityTypeMapping TypeName="AirplaneModel.Destination">
+              <MappingFragment StoreEntitySet="Destinations">
+                <ScalarProperty Name="DestinationID" ColumnName="DestinationID" />
+                <ScalarProperty Name="Destination1" ColumnName="Destination" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FlightCompanies">
+            <EntityTypeMapping TypeName="AirplaneModel.FlightCompany">
+              <MappingFragment StoreEntitySet="FlightCompany">
+                <ScalarProperty Name="FlightCompanyID" ColumnName="FlightCompanyID" />
+                <ScalarProperty Name="FlightCompanyName" ColumnName="FlightCompanyName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="Dest_Flight" TypeName="AirplaneModel.Dest_Flight" StoreEntitySet="Dest_Flight">
+            <EndProperty Name="Airplanes">
+              <ScalarProperty Name="AirplanesId" ColumnName="Airplanes_FK" />
+            </EndProperty>
+            <EndProperty Name="Destinations">
+              <ScalarProperty Name="DestinationID" ColumnName="Destination_FK" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
